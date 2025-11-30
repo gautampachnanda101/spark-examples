@@ -1,0 +1,6 @@
+customer_id,name,email,tier,signup_date
+C001,Alice Smith,alice@email.com,Gold,2020-01-01
+C002,Bob Jones,bob@email.com,Silver,2019-06-15
+C003,Charlie Brown,charlie@email.com,Bronze,2021-03-20
+C004,Diana Lee,diana@email.com,Gold,2020-08-10
+C005,Eve Wilson,eve@email.com,Silver,2022-01-05
