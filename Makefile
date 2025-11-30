@@ -23,12 +23,42 @@ export PYSPARK_DRIVER_PYTHON := $(PYTHON_VENV)
 GREEN := \033[0;32m
 YELLOW := \033[0;33m
 RED := \033[0;31m
+BLUE := \033[0;34m
+CYAN := \033[0;36m
+BOLD := \033[1m
 NC := \033[0m # No Color
 
 help: ## Show this help message
-	@echo "$(GREEN)Apache Spark Examples - Available Commands$(NC)"
 	@echo ""
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(YELLOW)%-15s$(NC) %s\n", $$1, $$2}'
+	@echo "$(BOLD)$(GREEN)╔══════════════════════════════════════════════════════════════╗$(NC)"
+	@echo "$(BOLD)$(GREEN)║         🚀 Apache Spark Examples - Make Commands 🚀          ║$(NC)"
+	@echo "$(BOLD)$(GREEN)╚══════════════════════════════════════════════════════════════╝$(NC)"
+	@echo ""
+	@echo "$(BOLD)$(BLUE)📦 SETUP$(NC)"
+	@echo "  $(YELLOW)init$(NC)            Check and install prerequisites (asdf, Python, Java)"
+	@echo "  $(YELLOW)install$(NC)         Create venv and install dependencies"
+	@echo "  $(YELLOW)clean$(NC)           Remove venv and generated files"
+	@echo ""
+	@echo "$(BOLD)$(BLUE)▶️  RUN EXAMPLES$(NC)"
+	@echo "  $(YELLOW)run-hello$(NC)       Example 1: Hello Spark - Getting started"
+	@echo "  $(YELLOW)run-basics$(NC)      Example 2: DataFrame Basics - Core operations"
+	@echo "  $(YELLOW)run-sql$(NC)         Example 3: SQL Operations - SQL integration"
+	@echo "  $(YELLOW)run-agg$(NC)         Example 4: Aggregations - Group and summarize"
+	@echo "  $(YELLOW)run-joins$(NC)       Example 5: Joins - Combine datasets"
+	@echo "  $(YELLOW)run-window$(NC)      Example 6: Window Functions - Analytics"
+	@echo "  $(YELLOW)run-etl$(NC)         Example 7: ETL Pipeline - Full pipeline"
+	@echo "  $(YELLOW)run-perf$(NC)        Example 8: Performance - Optimization tips"
+	@echo "  $(YELLOW)run-files$(NC)       Example 9: Reading Files - File formats"
+	@echo "  $(YELLOW)run-all$(NC)         Run all examples in sequence"
+	@echo ""
+	@echo "$(BOLD)$(BLUE)🛠️  TOOLS$(NC)"
+	@echo "  $(YELLOW)notebook$(NC)        Start Jupyter notebook server"
+	@echo "  $(YELLOW)shell$(NC)           Start interactive PySpark shell"
+	@echo "  $(YELLOW)test$(NC)            Run pytest tests"
+	@echo "  $(YELLOW)check-java$(NC)      Verify Java installation"
+	@echo ""
+	@echo "$(BOLD)$(CYAN)💡 Quick Start:$(NC)"
+	@echo "   make init && make install && make run-hello"
 	@echo ""
 
 init: ## Check and install all prerequisites (asdf, Python, Java)
@@ -149,6 +179,10 @@ run-perf: ## Run Example 8: Performance Tips
 	@echo "$(GREEN)Running: Performance Tips$(NC)"
 	$(PYTHON_VENV) src/examples/08_performance.py
 
+run-files: ## Run Example 9: Reading Files
+	@echo "$(GREEN)Running: Reading Files$(NC)"
+	$(PYTHON_VENV) src/examples/09_reading_files.py
+
 run-all: ## Run all examples in sequence
 	@echo "$(GREEN)Running all examples...$(NC)"
 	@echo ""
@@ -167,6 +201,8 @@ run-all: ## Run all examples in sequence
 	$(MAKE) run-etl
 	@echo ""
 	$(MAKE) run-perf
+	@echo ""
+	$(MAKE) run-files
 	@echo ""
 	@echo "$(GREEN)All examples completed!$(NC)"
 

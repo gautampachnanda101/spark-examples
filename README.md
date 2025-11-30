@@ -17,10 +17,10 @@ A fully working Apache Spark example project for learning and experimentation on
 ## 🚀 Quick Start
 
 ```bash
-# 1. Setup environment (IMPORTANT - run this first!)
-source setup_env.sh
+# 1. Check and install prerequisites (Python, Java via asdf)
+make init
 
-# 2. Install dependencies
+# 2. Install dependencies in virtual environment
 make install
 
 # 3. Run your first Spark job
@@ -28,12 +28,15 @@ make run-hello
 
 # 4. Run all examples
 make run-all
+
+# See all available commands
+make help
 ```
 
 ### One-liner Quick Start
 
 ```bash
-source setup_env.sh && make install && make run-hello
+make init && make install && make run-hello
 ```
 
 ---
@@ -41,48 +44,54 @@ source setup_env.sh && make install && make run-hello
 ## 📦 Prerequisites
 
 - **macOS** (Intel or Apple Silicon)
-- **Python 3.9+**
-- **Java 11 or 17** (required by Spark) - **⚠️ Java 21+ is NOT compatible!**
+- **[asdf](https://asdf-vm.com/)** - Version manager for Python and Java
 
-### ⚠️ IMPORTANT: Java Version Compatibility
-
-**Spark 3.5.x requires Java 8, 11, or 17.** If you have Java 21 or higher, install Java 17:
+### Installing asdf (if not already installed)
 
 ```bash
-# Install Java 17 via Homebrew
-brew install openjdk@17
+# Install asdf via Homebrew
+brew install asdf
 
-# Set JAVA_HOME (add to ~/.zshrc or ~/.bash_profile for persistence)
-export JAVA_HOME=/opt/homebrew/opt/openjdk@17
-export PATH="$JAVA_HOME/bin:$PATH"
-
-# Apply changes
+# Add to your shell (zsh)
+echo '. $(brew --prefix asdf)/libexec/asdf.sh' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### Quick Fix (Temporary for This Session)
+### Automatic Setup with `make init`
+
+The `make init` command will automatically:
+- ✅ Install asdf Python and Java plugins
+- ✅ Install Python 3.12.5
+- ✅ Install Java OpenJDK 17 (required by Spark)
+- ✅ Set local versions for this project
 
 ```bash
-export JAVA_HOME=/opt/homebrew/opt/openjdk@17 && export PATH="$JAVA_HOME/bin:$PATH"
+make init
 ```
 
-### Check Java Installation
+### ⚠️ Java Version Compatibility
+
+**Spark 3.5.x requires Java 8, 11, or 17.** Java 21+ is NOT compatible!
+
+The Makefile automatically uses Java 17 via asdf. To check your Java installation:
 
 ```bash
-java -version  # Should show version 11 or 17
+make check-java
 ```
 
 ---
 
 ## 🔧 Installation
 
-### Option 1: Using Make (Recommended)
+### Using Make (Recommended)
 
 ```bash
-make install
+# First time setup
+make init      # Install prerequisites via asdf
+make install   # Create venv and install packages
 ```
 
-### Option 2: Manual Installation
+### Manual Installation
 
 ```bash
 # Create virtual environment
@@ -91,9 +100,6 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Download sample data
-python scripts/download_data.py
 ```
 
 ---
@@ -103,40 +109,40 @@ python scripts/download_data.py
 ```
 spark-examples/
 ├── README.md                 # This file
-├── Makefile                  # Easy commands
+├── Makefile                  # Easy commands (run `make help`)
 ├── requirements.txt          # Python dependencies
 ├── setup.py                  # Package setup
+├── pytest.ini                # Pytest configuration
 │
 ├── data/                     # Sample datasets
 │   ├── customers.csv
-│   ├── transactions.csv
-│   └── products.json
+│   ├── employees.csv
+│   └── orders.csv
 │
 ├── src/                      # Source code
 │   ├── __init__.py
-│   ├── utils/               # Utility functions
+│   ├── utils/                # Utility functions
 │   │   ├── __init__.py
 │   │   └── spark_session.py
 │   │
-│   └── examples/            # Example scripts
-│       ├── __init__.py
+│   └── examples/             # Example scripts
 │       ├── 01_hello_spark.py
 │       ├── 02_dataframe_basics.py
-│       ├── 03_sql_queries.py
+│       ├── 03_sql_operations.py
 │       ├── 04_aggregations.py
 │       ├── 05_joins.py
 │       ├── 06_window_functions.py
 │       ├── 07_etl_pipeline.py
-│       └── 08_performance_tips.py
+│       ├── 08_performance.py
+│       └── 09_reading_files.py
 │
-├── notebooks/               # Jupyter notebooks
-│   └── spark_playground.ipynb
+├── notebooks/                # Jupyter notebooks
+│   └── 01_spark_tutorial.ipynb
 │
-├── output/                  # Output directory
+├── output/                   # Output directory
 │
-└── scripts/                 # Helper scripts
-    ├── download_data.py
-    └── run_example.py
+└── tests/                    # Unit tests
+    └── test_spark_basics.py
 ```
 
 ---
@@ -146,15 +152,19 @@ spark-examples/
 ### Using Make
 
 ```bash
+# See all available commands with colored output
+make help
+
 # Run specific examples
 make run-hello          # 01_hello_spark.py
 make run-basics         # 02_dataframe_basics.py
-make run-sql            # 03_sql_queries.py
+make run-sql            # 03_sql_operations.py
 make run-agg            # 04_aggregations.py
 make run-joins          # 05_joins.py
 make run-window         # 06_window_functions.py
 make run-etl            # 07_etl_pipeline.py
-make run-perf           # 08_performance_tips.py
+make run-perf           # 08_performance.py
+make run-files          # 09_reading_files.py
 
 # Run all examples
 make run-all
@@ -188,7 +198,7 @@ python src/examples/01_hello_spark.py
 - Filtering rows
 - Adding/modifying columns
 
-### 3. SQL Queries (`03_sql_queries.py`)
+### 3. SQL Operations (`03_sql_operations.py`)
 - Registering DataFrames as tables
 - Running SQL queries
 - Mixing DataFrame API with SQL
@@ -214,11 +224,16 @@ python src/examples/01_hello_spark.py
 - Data quality checks
 - Writing partitioned output
 
-### 8. Performance Tips (`08_performance_tips.py`)
+### 8. Performance (`08_performance.py`)
 - Caching
 - Broadcast variables
 - Partitioning strategies
 - Execution plan analysis
+
+### 9. Reading Files (`09_reading_files.py`)
+- Reading various file formats
+- Schema inference vs explicit schema
+- Handling malformed data
 
 ---
 
