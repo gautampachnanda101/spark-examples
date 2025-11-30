@@ -125,9 +125,9 @@ run-basics: ## Run Example 2: DataFrame Basics
 	@echo "$(GREEN)Running: DataFrame Basics$(NC)"
 	$(PYTHON_VENV) src/examples/02_dataframe_basics.py
 
-run-sql: ## Run Example 3: SQL Queries
-	@echo "$(GREEN)Running: SQL Queries$(NC)"
-	$(PYTHON_VENV) src/examples/03_sql_queries.py
+run-sql: ## Run Example 3: SQL Operations
+	@echo "$(GREEN)Running: SQL Operations$(NC)"
+	$(PYTHON_VENV) src/examples/03_sql_operations.py
 
 run-agg: ## Run Example 4: Aggregations
 	@echo "$(GREEN)Running: Aggregations$(NC)"
@@ -147,7 +147,7 @@ run-etl: ## Run Example 7: ETL Pipeline
 
 run-perf: ## Run Example 8: Performance Tips
 	@echo "$(GREEN)Running: Performance Tips$(NC)"
-	$(PYTHON_VENV) src/examples/08_performance_tips.py
+	$(PYTHON_VENV) src/examples/08_performance.py
 
 run-all: ## Run all examples in sequence
 	@echo "$(GREEN)Running all examples...$(NC)"

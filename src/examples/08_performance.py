@@ -334,7 +334,10 @@ Broadcast:
     ]
     
     for config in configs:
-        value = spark.conf.get(config, "not set")
+        try:
+            value = spark.conf.get(config)
+        except Exception:
+            value = "not set"
         print(f"  {config}: {value}")
     print()
     
