@@ -17,16 +17,13 @@ A fully working Apache Spark example project for learning and experimentation on
 ## 🚀 Quick Start
 
 ```bash
-# 1. Check and install prerequisites (Python, Java via asdf)
+# Setup everything (Python, Java, dependencies) - one command!
 make init
 
-# 2. Install dependencies in virtual environment
-make install
-
-# 3. Run your first Spark job
+# Run your first Spark job
 make run-hello
 
-# 4. Run all examples
+# Run all examples
 make run-all
 
 # See all available commands
@@ -36,7 +33,7 @@ make help
 ### One-liner Quick Start
 
 ```bash
-make init && make install && make run-hello
+make init && make run-hello
 ```
 
 ---
